@@ -1,14 +1,8 @@
 console.log('Starting notes js');
 const fs = require('fs');
-let notes = [];
-let addNote = (title, body) => {
 
-  let note = {
-    title,
-    body
-  }
-
-  let notesString;
+let fetchNotes = () => {
+  let notesString, notes;
   try {
     if (fs.existsSync('notes-data.json')) {
       notesString = fs.readFileSync('notes-data.json');
@@ -23,8 +17,24 @@ let addNote = (title, body) => {
   }
 
   if (notesString.length) {
-    notes = JSON.parse(notesString) ;
+    return JSON.parse(notesString) ;
   }
+  return [];
+};
+
+let saveNotes = (notes) => {
+  fs.writeFileSync('notes-data.json', JSON.stringify(notes));
+};
+
+let notes = [];
+let addNote = (title, body) => {
+
+  let note = {
+    title,
+    body
+  }
+  notes = fetchNotes()
+
   let duplicates = notes.filter((note) => {
     return note.title === title;
   })
@@ -32,7 +42,8 @@ let addNote = (title, body) => {
   if (duplicates.length === 0) {
     notes.push(note);
     try {
-    fs.writeFileSync('notes-data.json', JSON.stringify(notes));
+      saveNotes(notes);
+      return note;
     } catch (e) {
       console.log('Error happened: ', err);
       throw e;
@@ -53,7 +64,15 @@ let getNote = (title) => {
 }
 
 let removeNote = (title) => {
-  console.log('removing a note:', title);
+  //fetch notes
+  let notes = fetchNotes();
+  //filter note to delete
+  let saveThem = notes.filter((note) => {
+    return note.title !== title;
+  })
+  //save filtered notes
+    saveNotes(saveThem);
+    return notes.length !== saveThem.length;
 }
 
 
