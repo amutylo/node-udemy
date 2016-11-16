@@ -25,7 +25,9 @@ try {
       break;
 
     case 'read':
-      notes.getNote(argv.title);
+      note = notes.getNote(argv.title);
+      let message = note? 'Note ' + note.title + ' was read: ' + note.body : "Note not found";
+      console.log(message);
       break;
 
     case 'remove':
