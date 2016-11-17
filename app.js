@@ -8,7 +8,7 @@ const notes = require('./notes')
 let argv = yargs.argv;
 
 let command = argv._[0];
-let note;
+let note, message;
 console.log('command', command);
 console.log('yargs', argv);
 
@@ -17,7 +17,8 @@ try {
     case 'add':
       note = notes.addNote(argv.title, argv.body);
       if (note) {
-        console.log('Note of ' + note.title + ' was added');
+        console.log('Note was added');
+        notes.logNote(note);
       }
       break;
     case 'list':
@@ -26,13 +27,18 @@ try {
 
     case 'read':
       note = notes.getNote(argv.title);
-      let message = note? 'Note ' + note.title + ' was read: ' + note.body : "Note not found";
-      console.log(message);
+      if (note) {
+        console.log('Note found');
+        notes.logNote(note);
+      }
+      else {
+        console.log('Note not found');
+      }
       break;
 
     case 'remove':
       let nodeRemoved = notes.removeNote(argv.title);
-      let message = nodeRemoved? 'Note was removed' : 'Note not found';
+      message = nodeRemoved? 'Note was removed' : 'Note not found';
       console.log(message);
       break;
 
