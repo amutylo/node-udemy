@@ -5,7 +5,21 @@ const _ = require('lodash')
 const yargs = require('yargs');
 const notes = require('./notes')
 
-let argv = yargs.argv;
+let argv = yargs
+.command('add', 'add note', {
+  title: {
+    describe: 'title of note',
+    demand: true,
+    alias: 't'
+  },
+  body: {
+    describe: 'note body',
+    demand: true,
+    alias: 'b'
+  }
+})
+.help()
+.argv;
 
 let command = argv._[0];
 let note, message;
@@ -22,7 +36,9 @@ try {
       }
       break;
     case 'list':
-      notes.getAll();
+      let allNotes = notes.getAll();
+      console.log(`Printing ${allNotes.length} note(s)`);
+      allNotes.forEach((note) => notes.logNote(note));
       break;
 
     case 'read':

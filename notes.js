@@ -33,7 +33,7 @@ let addNote = (title, body) => {
     title,
     body
   }
-  notes = fetchNotes()
+  notes = fetchNotes();
 
   let duplicates = notes.filter((note) => {
     return note.title === title;
@@ -56,7 +56,7 @@ let addNote = (title, body) => {
 }
 
 let getAll = () => {
-  console.log('Getting all notes');
+  return fetchNotes();
 }
 
 let getNote = (title) => {
