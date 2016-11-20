@@ -1,23 +1,31 @@
-console.log('Starting app.')
-
-const fs = require('fs')
-const _ = require('lodash')
+console.log('Starting app.');
+const fs = require('fs');
+const _ = require('lodash');
 const yargs = require('yargs');
-const notes = require('./notes')
+const notes = require('./notes');
+const titleOptions = {
+  describe: 'title of note',
+  demand: true,
+  alias: 't'
+};
+const bodyOptions = {
+  describe: 'note body',
+  demand: true,
+  alias: 'b'
+};
 
 let argv = yargs
-.command('add', 'add note', {
-  title: {
-    describe: 'title of note',
-    demand: true,
-    alias: 't'
-  },
-  body: {
-    describe: 'note body',
-    demand: true,
-    alias: 'b'
-  }
+.command('add', 'add Note', {
+  title: titleOptions,
+  body: bodyOptions
 })
+.command('remove', 'remove Note', {
+  title: titleOptions
+})
+.command('list', 'list Notes')
+  .command('read', 'read Note', {
+    title: titleOptions
+  })
 .help()
 .argv;
 
